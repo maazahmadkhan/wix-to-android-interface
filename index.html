@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wix to Android Interface</title>
+    <style>
+      *,*::after,*::before{
+        padding:0;
+        margin:0;
+      }
+      #root{
+        height:100vh;
+        background-color: #f5fffe;
+      }
+      .spinner-overlay{
+        height: 60vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .spinner{
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(195, 195, 195, 0.6);
+        border-radius: 50%;
+        border-top-color: #636767;
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+      }
+      @keyframes spin {
+          to {
+            -webkit-transform: rotate(360deg);
+          }
+        }
+        @-webkit-keyframes spin {
+          to {
+            -webkit-transform: rotate(360deg);
+          }
+        }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="spinner-overlay">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <script>
+      function sendMessage(){
+        const queryString = window.location.search;
+        const paramsString = queryString?.replaceAll("?","") || "";
+        const params = {};
+        if(window.JSBridge && params){
+          const paramsArray = paramsString.split("&").map(paramString => paramString.split("="));
+          paramsArray.map(paramArray => {
+            const key = paramArray[0];
+            const value = paramArray[1];
+            params[key] = value;
+          });
+          const jsonString = JSON.stringify(params);
+          if(window.JSBridge.openBookADemo){
+            window.JSBridge.openBookADemo(jsonString);
+          }
+        }
+      }
+      sendMessage();
+    </script>
+  </body>
+</html>
